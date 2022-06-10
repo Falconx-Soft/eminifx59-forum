@@ -1,3 +1,4 @@
+from multiprocessing import context
 import pstats
 from tokenize import group
 from turtle import title
@@ -34,8 +35,8 @@ def register(request):
         user = authenticate(username=username, password=password)
         login(request, user)
         
-        return redirect('/bloglist')
-    return render(request, 'register.html')
+        return redirect('/list')
+    return render(request, 'home.html')
 
 def create_group(request):
     username= request.user.username
@@ -53,7 +54,7 @@ def create_group(request):
 
 def loginUser(request):
         if request.user.is_authenticated:
-            return redirect('/bloglist')
+            return redirect('list')
         if request.method == 'POST':
             username = request.POST['username']
             password = request.POST['password']
@@ -64,12 +65,11 @@ def loginUser(request):
 
             if user is not None:
                 login(request, user)
-                return redirect('/bloglist')	
+                return redirect('list')	
             
-        return render(request,'login.html',)
+        return render(request,'home.html',)
 
 def logoutUser(request):
-        print('1212122')
         logout(request)
         return redirect('/')
 
@@ -91,56 +91,41 @@ def create_post(request):
     return render(request,'blogdetail.html')
 
 def create_comment(request):
-    print('___________________________')
-    username= request.user.username
-    user_obj= User.objects.filter(username= username)
    
     if request.method== 'POST':
-        post_id= request.POST.get('post_id')
-        name= request.POST.get('name')
-        email= request.POST.get('email')
-        description= request.POST.get('description')
-        slug= request.POST.get('slug')
-        post_obj = Post.objects.get(id=post_id)
-        
-        comment_obj= PostComment.objects.create(name = name, email=email, description= description, blog = post_obj )
+
+        id = request.POST.get('id')
+        post_obj = Post.objects.get(id=id)
+        description= request.POST.get('comment')
+        comment_obj= PostComment.objects.create(name = request.user, description= description, post =  post_obj)
         comment_obj.save()
 
-        return redirect(reverse('detail', args = [slug]))
-    return render(request,'blogdetail.html')
+        return redirect(reverse('post',args=[id]))
+    return render(request,'home.html')
 
 def create_reply(request):
-    print('___________________________')
-    username= request.user.username
-    user_obj= User.objects.filter(username= username)
    
     if request.method== 'POST':
-        comment_id= request.POST.get('comment_id')
-        name= request.POST.get('name')
-        email= request.POST.get('email')
-        description= request.POST.get('description')
-        slug= request.POST.get('slug')
-        comment_obj = PostComment.objects.get(id=comment_id)
+        comment_id= request.POST.get('id')
+        description= request.POST.get('comment')
+        post_id = request.POST.get('post_id')
         
-        comment_obj= BlogReply.objects.create(name = name, email=email, description= description, comment = comment_obj )
+        comment_obj = PostComment.objects.get(id=comment_id)
+        comment_obj= CommentReply.objects.create(name = request.user, description= description, comment = comment_obj )
         comment_obj.save()
 
-        return redirect(reverse('detail', args = [slug]))
-    return render(request,'blogdetail.html')
+        return redirect(reverse('post', args = [post_id]))
+    return render(request,'home.html')
 
-def join_group(request):
-    username= request.user.username
-    user_obj= User.objects.get(username=username)
-    if request.method== 'POST':
-        group = request.POST.get('group_id')
-        group_obj= Group.objects.get(id=group)
-        join_group_obj= GroupJoined.objects.create(joined_group= group_obj, joined_by= user_obj)
-        join_group_obj.save()
-        slug= request.POST.get('slug')
-        return redirect(reverse('detail', args = [slug]))
-    return render(request,'blogdetail.html')
+def join_group(request,id):
+    
+    Group_obj = Group.objects.get(slug=id)
+    GroupJoined_obj = GroupJoined.objects.create(joined_group=Group_obj, joined_by=request.user)
+    GroupJoined_obj.save()
 
-def BlogList(request):
+    return redirect(reverse('detail', args = [id]))
+
+def GroupList(request):
     groups = Group.objects.all()
 
     paginator = Paginator(groups ,10) # Shows only 10 records per page
@@ -161,41 +146,61 @@ def BlogList(request):
         'groups':groups,
         'group':group
     }
-    return render(request,'bloglist.html',context)
+    return render(request,'grouplist.html',context)
 
-def BlogDetail(request,slug):
-    lis   = Group.objects.all()
+def GroupDetail(request,slug):
     group = Group.objects.get(slug=slug)
-    
     posts= Post.objects.filter(group=group)
-    # comments= PostComment.objects.filter(blog=posts[0])
-    # reply = BlogReply.objects.filter(comment = comments)    
-    # print(reply)
-    replies = BlogReply.objects.all()
-    # print(comments)
-    form = Comment()
-    form_1 = Reply()
-    if request.method =='POST':
-         form=Comment(request.POST or None)
-         if form.is_valid():
-            new_comment = form.save(commit=False)
-            new_comment.blog=group
-            new_comment.save()
-            form.save()
-            return HttpResponseRedirect(reverse('detail', args=[slug]))
-             
- 
+    temp = False
+
+    for g in GroupJoined.objects.filter(joined_group=group):
+        if g.joined_by == request.user:
+            temp = True
     context = {
-        'blogs':group,
-        
+        'group':group,
         'posts':posts,
-        'list':lis,
-        'form':form,
-        # 'relpy' : reply,
-        'replies' : replies,
-        'form_1' : form_1,
+        'is_member':temp
     }
-    return render(request,'blogdetail.html',context)
+    return render(request,'groupdetail.html',context)
+
+def GroupMembers(request, slug):
+    group = Group.objects.get(slug=slug)
+    members = GroupJoined.objects.filter(joined_group=group)
+    context = {
+        'group':group,
+        'members':members
+    }
+    return render(request,'groupmembers.html',context)
+
+
+def ViewPost(request,id):
+    post_obj = Post.objects.get(id=id)
+    post_comment = PostComment.objects.filter(post=post_obj)
+
+    context = {
+        'post':post_obj,
+        'comments':post_comment,
+    }
+    return render(request,'post.html',context)
+
+def view_profile(request,id):
+    user_obj = User.objects.get(id=id)
+    context = {
+        'user_obj':user_obj
+    }
+    return render(request, 'profile.html',context)
+
+def user_post(request,id):
+    user_obj = User.objects.get(id=id)
+    posts = Post.objects.filter(post_by=user_obj)
+
+    context = {
+        'user_obj':user_obj,
+        'posts':posts,
+    }
+    return render(request, 'user_post.html',context)
 
 def home(request):
+    if request.user.is_authenticated:
+            return redirect('list')
     return render(request,'home.html')

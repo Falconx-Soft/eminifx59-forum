@@ -8,8 +8,7 @@ class Comment(ModelForm):
     class Meta:
         model = PostComment
         fields =  [
-            'name',     
-            'email',       
+            'name',      
             'description',         
              
     
@@ -17,10 +16,9 @@ class Comment(ModelForm):
 
 class Reply(ModelForm):
     class Meta:
-        model = BlogReply
+        model = CommentReply
         fields =  [
             'name',     
-            'email',       
             'description',         
 ]
 

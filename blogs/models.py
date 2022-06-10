@@ -1,4 +1,6 @@
+from operator import mod
 from tokenize import group
+from turtle import title
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import pre_save
@@ -9,6 +11,7 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from ckeditor_uploader.fields import RichTextUploadingField 
 from ckeditor.fields import RichTextField
+
 class Group(models.Model):
     author      =       models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title       =       models.CharField(max_length=1000)
@@ -23,41 +26,40 @@ class Group(models.Model):
 
     def __str__(self):
         return self.title
+
 class GroupJoined(models.Model):
     joined_group= models.ForeignKey(Group, on_delete=models.CASCADE) 
     joined_by= models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
-        return self.group.title
+        return self.joined_group.title
+
 class Post(models.Model):
     group       =       models.ForeignKey(Group, on_delete= models.CASCADE)
     post_by     =       models.ForeignKey(User, on_delete=models.CASCADE)
-    post_text   =       RichTextField(blank= True, null = True) 
-    # post_text   =       models.CharField(max_length=500, default='') 
+    title       =       models.CharField(max_length=1000, null=True)
+    post_text   =       RichTextField(blank= True, null = True)
     post_created=       models.DateTimeField(auto_now_add= True)
     def __str__(self):
-        return self.group.title
+        return self.title
 
 class PostComment(models.Model):
     name        =       models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    email       =       models.CharField(max_length=100)
-    description =       RichTextField(blank= True, null = True)
-    # description =       models.TextField(max_length=1000)
+    description =       models.TextField(blank= True, null = True)
     post_date   =       models.DateTimeField(auto_now_add=True)
-    blog        =       models.ForeignKey(Post, on_delete=models.CASCADE)
+    post        =       models.ForeignKey(Post, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["-post_date"]
 
     def __str__(self):
-        return self.description
+        return str(self.id)
     
   
 
 
 
-class BlogReply(models.Model):
+class CommentReply(models.Model):
     name        =       models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    email       =       models.CharField(max_length=100)
     description =       models.TextField(max_length=1000)
     post_date   =       models.DateTimeField(auto_now_add=True)
     comment     =       models.ForeignKey(PostComment, on_delete=models.CASCADE)
@@ -66,5 +68,11 @@ class BlogReply(models.Model):
         ordering = ["-post_date"]
 
     def __str__(self):
-        return self.name
+        return str(self.comment.id)
 
+class Profile(models.Model):
+    user            =       models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    profile_image   =       models.ImageField()
+
+    def __str__(self):
+        return str(self.user.username)

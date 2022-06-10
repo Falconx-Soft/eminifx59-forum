@@ -25,7 +25,7 @@ SECRET_KEY = '61&+8q-^2z_1silwm$4$z(4@q=yp7y!4r(*p!$3h5kh0op4_va'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -132,8 +132,8 @@ SSTATICFILES_DIRS=[
     STATIC_ROOT,
 
     ]
-MEDIA_URL = '/media/'
-MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR),'media')
+MEDIA_URL = '/img/'
+MEDIA_ROOT= os.path.join(BASE_DIR, 'static/img')
 
 ############
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
