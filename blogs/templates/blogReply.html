@@ -1,0 +1,10 @@
+<h1>
+    Blog reply
+</h1>
+
+
+<form method="POST", action="{% url 'reply'  comment.id slug %}">
+    {% csrf_token %}
+    {{ form1.as_p }}
+    <input type="submit">
+</form>

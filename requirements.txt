@@ -1,0 +1,5 @@
+django==2.2.4
+django_social_share
+django_embed_video
+django_bootstrap_pagination
+django_ckeditor

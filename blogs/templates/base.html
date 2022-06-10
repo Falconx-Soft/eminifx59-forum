@@ -1,0 +1,100 @@
+
+
+{%  load static %}
+
+<!DOCTYPE html>
+
+<!--[if lt IE 9]>
+<html id="ie" lang="en-US" prefix="og: http://ogp.me/ns#">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en-US" prefix="og: http://ogp.me/ns#">
+<!--<![endif]-->
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>BLOG</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+     
+    <!-- all other scripts are enqueued via functions.php -->
+    <!--[if lt IE 9]>
+        <script src="https://cupofjo.com/wp-content/themes/cupofjo/assets/vendor/html5shiv.js" type="text/javascript"></script>
+    <![endif]-->
+
+    <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- ==== Document Title ==== -->
+  
+  <!-- ==== Document Meta ==== -->
+  <meta name="author" content="ThemeLooks">
+  <meta name="description" content="Multipurpose Social Network HTML5 Template">
+  <meta name="keywords" content="social media, social network, forum, shop, bootstrap, html5, css3, template, responsive, retina ready">
+
+  <!-- ==== Favicon ==== -->
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <!-- ==== Google Font ==== -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700%7CRoboto:300,400,400i,500,700">
+
+
+    <script src="https://cupofjo.com/wp-content/themes/cupofjo/assets/test.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static '/css/nav.css' %}">
+
+<link rel='stylesheet' id='cup-of-jo-style-css'  href='https://cupofjo.com/wp-content/themes/cupofjo/style.css?ver=20181117' type='text/css' media='all' />
+<script type='text/javascript' src='https://cupofjo.com/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script type='text/javascript' src='https://cupofjo.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript' src='https://cupofjo.com/wp-content/themes/cupofjo/assets/vendor/jquery.fitvids.js?ver=5.1.1'></script>
+<script type='text/javascript' src='https://cupofjo.com/wp-content/themes/cupofjo/assets/vendor/jquery.bxslider.min.js?ver=5.1.1'></script>
+<script type='text/javascript' src='https://cupofjo.com/wp-content/themes/cupofjo/assets/vendor/validation.js?ver=5.1.1'></script>
+<script type='text/javascript' src='https://cupofjo.com/wp-content/themes/cupofjo/assets/vendor/isotope.pkgd.min.js?ver=5.1.1'></script>
+<script type='text/javascript' src='https://cupofjo.com/wp-content/themes/cupofjo/assets/theme.js?ver=20190116a'></script>
+
+<!-- Template styling -->
+
+  <!-- ==== Plugins Bundle ==== -->
+  <link rel="stylesheet" href="{% static 'css/plugins.min.css'%}">
+  
+  <!-- ==== Main Stylesheet ==== -->
+  <link rel="stylesheet" href="{% static 'css/style.css'%}">
+  
+  <!-- ==== Responsive Stylesheet ==== -->
+  <link rel="stylesheet" href="{% static 'css/responsive-style.css'%}">
+  
+  <!-- ==== Color Scheme Stylesheet ==== -->
+  <link rel="stylesheet" href="{% static 'css/colors/color-1.css'%}" id="changeColorScheme">
+  
+  <!-- ==== Custom Stylesheet ==== -->
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+
+{% block extrastylesheet %}
+{% endblock %}
+	
+<body>
+
+{% include 'nav.html' %}
+
+{% block content %}
+
+{% endblock %}
+
+<!-- ==== Plugins Bundle ==== -->
+<script src="{% static 'js/plugins.min.js' %}"></script>
+
+<!-- ==== Color Switcher Plugin ==== -->
+<!-- <script src="{% static 'js/color-switcher.min.js' %}"></script> -->
+
+<!-- ==== Main Script ==== -->
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+       
+</html>

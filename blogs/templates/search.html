@@ -1,0 +1,38 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+ 
+
+{% block content %}
+
+    <link rel="stylesheet" type = "text/css" href="{% static 'music/css/login.css' %}">
+
+    <div class="list-group" style="position : relative; top:50px;left:100px; max-width:850px;">
+        {% for post in search %}
+            <a href="{% url 'detail' post.slug %}" class="list-group-item list-group-item-action">
+                {{ post.title|escape }} <br>  
+            </a>
+            {{ post.description|escape }} 
+            {{post.author}}
+        {% endfor %}
+    </div>
+        
+  
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,49 @@
+
+.navbar-header{
+ margin-left: 14px !important;
+}
+.navbar-brand{
+    font-size: 28px;
+    font-weight: 600;
+   
+    letter-spacing: 8px;
+
+}
+.navbar{
+    transition-duration: .25s !important;
+    transition-timing-function: ease-in-out !important;
+    
+    padding: 13px !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
+    position: fixed !important;
+    overflow: hidden;
+    z-index: 100;
+    width: 100%;
+}
+.navbar-right{
+    font-size: 14px !important;
+    margin-right: 32px !important;
+}
+.navbar-right-link{
+    color: inherit;
+}
+.nav-colored {
+    background-color: #fff !important;
+    transition: background-color 200ms linear;
+  }
+
+  ::placeholder {
+    color: #999999;
+    opacity: 0.5; /* Firefox */
+    font-style: italic;
+    font-size: 12px;
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #999999;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+   color: #999999;
+  }

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load embed_video_tags %}
+
+        
+{% block content %}
+<div class="container" style="background:white">
+        <div class="row">
+            <div class="col-md-8">
+                {% for  blogs in blogs %}  
+
+<a  href="{% url 'detail' blogs.slug %}"  style="color:black; "><strong >{{blogs.title}}</strong></a><br> 
+By <a href="{% url 'blog-by-author' blogs.author.id %}">{{blogs.author.author}}</a>   <br><br><br>
+{% if blogs.image %}
+ <a href="{% url 'detail' blogs.slug %}"><img src="/media/{{blogs.image}}" style="height:500px;width:500px;"> </a>
+ {% else %}
+ {% video blogs.video '500x500' %}
+ {% endif %}
+ <br><br><br>
+<p>{{blogs.description}}</p>
+
+
+<hr style= ' background-color: red; height: 1px; border: 0; '>
+{% endfor %}
+</div>
+ <div class="col-xs-4">
+
+    <div class="panel panel-default" style="margin-right:10px">
+        <div class="panel-heading">
+            <div class=" panel-title"><strong> Popular Blogs </strong></div>
+        </div>
+        <div class="panel-body">
+
+            {% for list in list  %}
+                {% if forloop.counter <= 5 %}
+                {% if list.image %}
+            <img src="/media/{{list.image}}" style="height:50px;width:50px">{% else %}
+            {% video list.video '50x50' %}
+            {% endif %}
+            <a href="{% url 'detail' list.slug %}" style="color:black">{{list.title}}</a><br>
+           {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="panel panel-default" style="margin-right:50px">
+        <div class="panel-heading">
+            <div class=" panel-title"><strong>Subscribe Our Blog</strong></div>
+        </div>
+        <div class="panel-body">
+            <p>Keep in touch, stay tuned with our more blogs. you can subscribe it here</p>
+            <a href="{% url 'subscribe' %}" style="color:black">
+                <h4 style="border:black;border-radius:10px;border-style: solid;border-width: 1px;text-align: center">
+                    Subscribe </h4>
+            </a>
+        </div>
+    </div>
+ </div>
+</div></div>
+
+{% endblock %}

@@ -1,0 +1,366 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load comments %}
+{% load replies %}
+{% load joined_group %}
+{% block content %}
+{% load social_share %}
+{% block extrastylesheet %}
+<link rel="stylesheet" href="{% static '/css/home.css' %}">
+<link rel="stylesheet" href="{% static '/css/group_detail.css' %}">
+{% endblock %}
+
+<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+<style>
+  .new a {
+
+    color: blue;
+    font-style: italic;
+  }
+
+  .button {
+    border: solid blue 2px;
+    border-radius: 5px;
+    font-style: italic;
+    margin-left: 300px;
+
+  }
+
+  .button a {
+    color: blue
+  }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<div class="page--header pt--60 pb--60 text-center bg--img--detail" data-overlay="0.85" data-rjs="2" style="background-image: url('../static/img/blue_bg.jpg')";>
+  <div class="container" style="margin-top: 48px;">
+      <div class="title">
+          
+      </div>
+
+     
+  </div>
+</div>
+<div class="container">
+  <div class="container overlay-block">
+    <div class="overlay-subblock">{{blogs.title.0}}</div>
+  </div>
+  <div class="container detail_block">
+      <h3 class="detail_title">{{blogs.title}}</h3>
+      <div class="create_time"><p><i class="fa mr--8 fa-clock-o" style="margin-right: 2px;" ></i>Created {{blogs.created_at}}</p></div>
+      <div class="create_time"><p style="margin: 0 !important;">Group Admin</p> </div>
+      <div class="admin_block"><p>{{blogs.author.first_name| title}}</p> </div>
+  </div>
+
+</div>
+<div class="container">
+  <div class="container posts_block">
+    <div class="post_header">
+      <div>POSTS</div>
+      <div><Button class="new_post_button" > Create New Post</Button></div>
+    </div>
+    <!-- ************************ Post Block -->
+    {% for post in posts %}
+    <div class="post_block_new">
+      <div class="post_content_top">
+        <div class="profile">{{post.post_by.username.0 | upper}}</div>
+        <div class="profile_details">
+          <div>
+            <div class="create_time"><p style="margin: 0 !important;">Posted By</p> </div>
+        <div class="admin_block"><p>{{post.post_by.username | title}}</p> </div>
+          </div>
+          
+        <div class="create_time"><p><i class="fa mr--8 fa-clock-o" ></i>Created {{post.post_created}}</p></div>
+        </div>
+        
+      </div>
+      
+      <div class="post_content">
+        <div>
+          {{post.post_text |safe}}
+        </div> 
+        <!-- ***************************** Comment Block -->
+        {% for comment in post.id|comments %} 
+        <div class="post_content_top">
+          
+          <div class="comment_profile">{{comment.name.0 | upper}}</div>
+          <div class="comment_owner_section border_bottom">
+            <div class="comment_owner">
+              <div class="admin_block"><p style="margin: 0">{{comment.name | title}}</p> </div>
+              <div class="create_time"><p style="margin: 0 !important; margin-left: 14px !important;">Commented</p> </div>
+            </div>
+            
+            <div class="create_time"><p><i class="fa mr--8 fa-clock-o" ></i> {{comment.post_date}}</p></div>
+            <div class="comment_text border_bottom">{{comment.description}}</div>
+            <!-- ******************************************* Reply Block -->
+            {% for reply in comment.id|replies %}
+            <div class="reply_content_block">
+              <div class="comment_profile">{{reply.name.0 | upper}}</div>
+              <div class="comment_owner_section ">
+                <div class="comment_owner">
+                  <div class="admin_block"><p style="margin: 0">{{reply.name | title}}</p> </div>
+                  <div class="create_time"><p style="margin: 0 !important;">Replied</p> </div>
+                </div>
+                
+                <div class="create_time"><p><i class="fa mr--8 fa-clock-o" ></i> {{reply.post_date}}</p></div>
+                <div class="comment_text border_bottom">{{reply.description}}</div>
+              </div>
+              
+            </div>
+            {% endfor %}
+            
+            <!-- ******************************************* End Reply Block -->
+            <!-- ******************************************* Reply Input Block -->
+            <div class="comment_input_block" >
+          
+              <input type="text" class="comment_input" placeholder="Write Your Reply Here....">
+              <button class="reply_button">Reply</button>
+              
+            </div>
+            <!-- ******************************************* End Reply InPut Block  -->
+          </div>
+          
+        </div>
+        {% endfor %}
+        <!-- ***************************** End Comment Block -->
+        <!-- ********************************************** Comment Input Block -->
+        <div class="comment_input_block" >
+          
+          <input type="text" class="comment_input" placeholder="Write Your Comment Here....">
+          <button class="post_button">Post</button>
+          
+        </div>
+        <!-- ********************************************** End Comment Input Block -->
+      </div>
+    </div>
+    {% endfor %}
+    <!-- ************************ End Post Block -->
+   
+  </div>
+</div>
+
+<div class=" container" style='background: white; margin-top: 10%;'>
+  <div class="row">
+    <div class="col-md-8 col-xs-8 col-sm-8">
+      <div style="display: flex;justify-content: space-between;">
+        <div>
+          <h3 style="font-style:italic">{{blogs.title}}</h3>
+          by <a href="#">{{blogs.author.author}}</a><br>
+
+          <i>Created at: {{blogs.created_at}}</i>
+
+        </div>
+        {% if not user.is_authenticated %}
+        <a href="/">Login To Add Post</a>
+        {% elif not blogs.id|joined_group:user.username %}
+        <form method="POST" action="{% url 'joingroup' %}">
+          {% csrf_token %}
+          <input type="text" name="slug" value="{{blogs.slug}}" hidden>
+          <input type="text" name="group_id" value="{{blogs.id}}" hidden>
+          <div> <button type="submit" >
+            Join Group
+          </button></div>
+        </form>
+        {% else %}
+        <div> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+          Create Post
+        </button></div>
+        {% endif %}
+        
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              
+              <form class="form" method="POST" action="{% url 'postcreate' %}">
+                <div class="modal-body">
+
+                  {% csrf_token %}
+            
+                  
+                  <input type="text" name="slug" value="{{blogs.slug}}" hidden>
+                  <div class="form-holder login-form active" data-step="1">
+                    <h1 class="form-title">Create Your Post</h1>
+
+                    <div class="form">
+                      <div>
+
+
+                        <div class="signup_input"> <textarea name="post_text" cols="40" rows="10" maxlength="1000"
+                            required id="post_description" class="form-control z-depth-1"
+                            placeholder="Write something here..." style="resize:none;"></textarea>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="modal-footer">
+
+                  <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br> <br> <br>
+      <div style='background: white'>
+        <table>
+          <tr>
+            <h2>Posts</h2>
+
+
+          </tr>
+        </table>
+      </div>
+      
+      <div class="post_section">
+        {% for post in posts %}
+
+        <section id="post_section">
+          <div class="post_block">
+            <div> <button type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#commentModal{{post.id}}">
+                Comment
+              </button></div>
+            <div class="modal fade" id="commentModal{{post.id}}" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content" style="padding: 35px;">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Comment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form method="POST" action="{% url 'comment' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <input type="text" name="slug" value="{{blogs.slug}}" hidden>
+                      <input type="text" hidden name="post_id" value="{{post.id}}">
+                      <label>Name</label>
+                      <input name="name" type="text" style="border-color:rgb(226, 223, 221)" class="form-control"
+                        id="id_name" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input name="email" type="email" style="border-color:rgb(226, 223, 221)" class="form-control"
+                        placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Comment</label>
+                      <textarea name="description" cols="40" rows="5" maxlength="1000" required id="id_description"
+                        class="form-control z-depth-1" placeholder="Write something here..."
+                        style="resize:none;"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-default">Post</button><br>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <h1>POST {{post.id}}</h1>
+            <h3>Post By: {{post.post_by.username}}</h3>
+            <br>
+            <p> Post Text: {{post.post_text |safe}}</p>
+
+          </div>
+
+
+          <div style="margin-left: 20px;">
+            {% if  post.id|comments %}
+            <h2>Comments</h2>
+            {% endif %}
+            {% for comment in post.id|comments %}
+            <div style="border: 1px solid;padding: 13px; border-radius: 5px; margin-bottom: 5px;">
+              <div> <button type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#replyModal{{comment.id}}">
+                Reply
+              </button></div>
+              <h4 style="font-weight: 600;">Comment By:{{comment.name}}</h4>
+              <p>{{comment.description}}</p>
+             
+            <div class="modal fade" id="replyModal{{comment.id}}" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content" style="padding: 35px;">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Comment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form method="POST" action="{% url 'reply' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <input type="text" name="slug" value="{{blogs.slug}}" hidden>
+                      <input type="text" hidden name="comment_id" value="{{comment.id}}">
+                      <label>Name</label>
+                      <input name="name" type="text" style="border-color:rgb(226, 223, 221)" class="form-control"
+                        id="id_name" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input name="email" type="email" style="border-color:rgb(226, 223, 221)" class="form-control"
+                        placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Comment</label>
+                      <textarea name="description" cols="40" rows="5" maxlength="1000" required id="id_description"
+                        class="form-control z-depth-1" placeholder="Write something here..."
+                        style="resize:none;"></textarea>
+                    </div>
+  
+                    <button type="submit" onclick="javascript:(this).parent.submit();" class="btn btn-default">Post</button><br>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% if comment.id|replies %}
+              <div style="margin-left: 20px;border: 1px solid gray;margin-left: 20px;padding: 7px; border-radius: 5px;">
+                
+                {% for reply in comment.id|replies %}
+                <p style="font-weight: 600;">{{reply.name}}</p>
+                <p>{{reply.description}}</p>
+                {% endfor %}
+               
+              </div>
+  
+              {% endif %}
+            </div>
+            
+            {% endfor %}
+        </section>
+        {% endfor %}
+      </div>
+
+
+      
+    </div>
+   
+
+    <!-- Button trigger modal -->
+
+
+
+
+  </div>
+
+</div>
+
+<!-- For ckeditor -->
+<script>
+  CKEDITOR.replace( 'post_description' );
+</script>
+
+{% endblock %}
