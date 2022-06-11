@@ -20,6 +20,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.defaultfilters import slugify
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 
 def register(request):
     if request.method== 'POST':
@@ -38,6 +39,7 @@ def register(request):
         return redirect('list')	
     return render(request, 'home.html')
 
+@login_required(login_url="")
 def create_group(request):
     if request.method== 'POST':
         title = request.POST.get('title')
@@ -70,6 +72,7 @@ def logoutUser(request):
         logout(request)
         return redirect('/')
 
+@login_required(login_url="")
 def create_post(request):
     if request.method== 'POST':
         post_text= request.POST.get('post_text')
@@ -82,6 +85,7 @@ def create_post(request):
         return redirect(reverse('detail', args = [slug]))
     return render(request,'home.html')
 
+@login_required(login_url="")
 def create_comment(request):
    
     if request.method== 'POST':
@@ -95,6 +99,7 @@ def create_comment(request):
         return redirect(reverse('post',args=[id]))
     return render(request,'home.html')
 
+@login_required(login_url="")
 def create_reply(request):
    
     if request.method== 'POST':
@@ -109,6 +114,7 @@ def create_reply(request):
         return redirect(reverse('post', args = [post_id]))
     return render(request,'home.html')
 
+@login_required(login_url="")
 def join_group(request,id):
     
     Group_obj = Group.objects.get(slug=id)
@@ -144,6 +150,7 @@ def GroupList(request):
     }
     return render(request,'grouplist.html',context)
 
+
 def GroupDetail(request,slug):
     resent_groups = Group.objects.all()[:4]
     group = Group.objects.get(slug=slug)
@@ -161,6 +168,7 @@ def GroupDetail(request,slug):
     }
     return render(request,'groupdetail.html',context)
 
+@login_required(login_url="")
 def GroupMembers(request, slug):
     group = Group.objects.get(slug=slug)
     resent_groups = Group.objects.all()[:4]
@@ -171,7 +179,6 @@ def GroupMembers(request, slug):
         'resent_groups':resent_groups
     }
     return render(request,'groupmembers.html',context)
-
 
 def ViewPost(request,id):
     post_obj = Post.objects.get(id=id)
@@ -186,6 +193,7 @@ def ViewPost(request,id):
     }
     return render(request,'post.html',context)
 
+@login_required(login_url="")
 def view_profile(request,id):
     user_obj = User.objects.get(id=id)
 
@@ -196,6 +204,7 @@ def view_profile(request,id):
     }
     return render(request, 'profile.html',context)
 
+@login_required(login_url="")
 def user_post(request,id):
     user_obj = User.objects.get(id=id)
     posts = Post.objects.filter(post_by=user_obj)

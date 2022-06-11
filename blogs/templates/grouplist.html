@@ -108,11 +108,11 @@
                                                 </div>
                                                 <div class="info" style="min-height: 190px;">
                                                     <div class="icon fs--18 text-lightest bg-primary">
-                                                        <h3 class="group-logo">G</h3>
+                                                        <h3 class="group-logo">{{g.title.0}}</h3>
                                                     </div>
 
                                                     <div class="title">
-                                                        <h2 class="h6"><a href="group-home.html">{{g.title}} ({{g.author}})</a></h2>
+                                                        <h2 class="h6"><a href="{% url 'detail' g.slug %}">{{g.title}} ({{g.author}})</a></h2>
                                                     </div>
 
                                                     <div class="meta">
