@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block extrastylesheet %}
+  <link rel="stylesheet" href="{% static 'css/blogdetails.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -22,7 +24,7 @@
                                         <!-- Banner Content Start -->
                                         <div class="banner--content pt--70 pb--80">
                                             <div class="title">
-                                                <h1 class="h2 text-white">Welcome To Community</h1>
+                                                <h1 class="h2 text-white">Welcome To Eminifx59 Community</h1>
                                             </div>
 
                                             <div class="sub-title">
@@ -43,7 +45,9 @@
 
                                     <div class="col-md-4 col-md-offset-1 col-xs-8 col-xs-offset-2 col-xxs-12">
                                         <!-- Widget Start -->
+                                        {% if not user.is_authenticated %}
                                         <div class="widget">
+                                            
                                             <h2 class="h4 fw--700 widget--title">Sign up</h2>
 
                                             <!-- Buddy Finder Widget Start -->
@@ -110,11 +114,13 @@
                                                         </div>
                                                     </div>
                                                 </form>
-                                            </div>
+                                            </div>                
                                             <!-- Buddy Finder Widget End -->
-                                        </div>
+                                        </div>   
+                                        
                                         <!-- Widget End -->
                                     </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -145,19 +151,19 @@
                     <div class="col-md-7 pb--40">
                         <div class="row gutter--15 AdjustRow" data-scroll-reveal="group">
                             <div class="col-xs-4 pb--15">
-                                <img src="img/how-it-works-img/01.jpg" alt="">
+                                <img src="{% static 'img/01.jpg' %}" alt="">
                             </div>
 
                             <div class="col-xs-4 pb--15">
-                                <img src="img/how-it-works-img/02.jpg" alt="">
+                                <img src="{% static 'img/02.jpg' %}" alt="">
                             </div>
 
                             <div class="col-xs-4 pb--15">
-                                <img src="img/how-it-works-img/03.jpg" alt="">
+                                <img src="{% static 'img/03.jpg' %}" alt="">
                             </div>
 
                             <div class="col-xs-12">
-                                <img src="img/how-it-works-img/04.jpg" alt="">
+                                <img src="{% static 'img/04.jpg' %}" alt="">
                             </div>
                         </div>
                     </div>
@@ -168,7 +174,7 @@
                             <!-- Info Item Start -->
                             <div class="info--item clearfix">
                                 <div class="icon">
-                                    <img src="img/how-it-works-img/icon-01.png" alt="">
+                                    <img src="{% static 'img/icon-01.png' %}" alt="">
                                 </div>
 
                                 <div class="info">
@@ -186,7 +192,7 @@
                             <!-- Info Item Start -->
                             <div class="info--item clearfix">
                                 <div class="icon">
-                                    <img src="img/how-it-works-img/icon-02.png" alt="">
+                                    <img src="{% static 'img/icon-02.png' %}" alt="">
                                 </div>
 
                                 <div class="info">
@@ -204,7 +210,7 @@
                             <!-- Info Item Start -->
                             <div class="info--item clearfix">
                                 <div class="icon">
-                                    <img src="img/how-it-works-img/icon-03.png" alt="">
+                                    <img src="{% static 'img/icon-03.png' %}" alt="">
                                 </div>
 
                                 <div class="info">
@@ -222,7 +228,7 @@
                             <!-- Info Item Start -->
                             <div class="info--item clearfix">
                                 <div class="icon">
-                                    <img src="img/how-it-works-img/icon-04.png" alt="">
+                                    <img src="{% static 'img/icon-04.png' %}" alt="">
                                 </div>
 
                                 <div class="info">
@@ -251,9 +257,9 @@
                     <div class="col-md-6 pb--60">
                         <!-- Video Popup Start -->
                         <div class="video--popup style--2" data-overlay="0.3">
-                            <img src="img/why-choose-us-img/video-poster-2.jpg" alt="">
+                            <img src="{% static 'img/video-poster-2.jpg' %}" alt="">
 
-                            <a href="https://www.youtube.com/watch?v=YE7VzlLtp-4" data-overlay="0.5" data-overlay-color="primary" data-trigger="video_popup">
+                            <a href="#" data-overlay="0.5" data-overlay-color="primary" data-trigger="video_popup">
                                 <i class="fa fa-play"></i>
                             </a>
                         </div>
@@ -283,102 +289,7 @@
         </section>
         <!-- Why Choose Us Section End -->
 
-        <!-- FAQ and Download Section Start -->
-        <section class="section pt--70 pb--20">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-5 pb--60">
-                        <!-- FAQ Items Start -->
-                        <div class="faq--items" id="faqItems" data-scroll-reveal="group">
-                            <div class="title pb--20">
-                                <h2 class="h2 fw--600">Frequently Asked Question</h2>
-                            </div>
-
-                            <!-- FAQ Item Start -->
-                            <div class="faq--item style--1 panel">
-                                <div class="title">
-                                    <h3 class="h6 fw--700 text-darker">
-                                        <a href="#faqItem01" data-parent="#faqItems" data-toggle="collapse" class="collapsed">
-                                            <span>How can I register?</span>
-                                        </a>
-                                    </h3>
-                                </div>
-
-                                <div id="faqItem01" class="content collapse">
-                                    <div class="content--inner">
-                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words even slightly believable.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- FAQ Item End -->
-
-                            <!-- FAQ Item Start -->
-                            <div class="faq--item style--1 panel">
-                                <div class="title">
-                                    <h3 class="h6 fw--700 text-darker">
-                                        <a href="#faqItem02" data-parent="#faqItems" data-toggle="collapse" class="collapsed">
-                                            <span>What are the benefits of premium plans?</span>
-                                        </a>
-                                    </h3>
-                                </div>
-
-                                <div id="faqItem02" class="content collapse">
-                                    <div class="content--inner">
-                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words even slightly believable.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- FAQ Item End -->
-
-                            <!-- FAQ Item Start -->
-                            <div class="faq--item style--1 panel">
-                                <div class="title">
-                                    <h3 class="h6 fw--700 text-darker">
-                                        <a href="#faqItem03" data-parent="#faqItems" data-toggle="collapse" class="collapsed">
-                                            <span>How can I renew my plan?</span>
-                                        </a>
-                                    </h3>
-                                </div>
-
-                                <div id="faqItem03" class="content collapse">
-                                    <div class="content--inner">
-                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words even slightly believable.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- FAQ Item End -->
-                        </div>
-                        <!-- FAQ Items End -->
-                    </div>
-
-                    <div class="col-md-7 pb--60">
-                        <!-- Download Block Start -->
-                        <div class="download--block" data-scroll-reveal="group">
-                            <div class="img">
-                                <img src="img/download-img/mobile.png" alt="">
-                            </div>
-
-                            <div class="info">
-                                <div class="title">
-                                    <h2 class="h2 fw--600">Download Application &amp; Get More Features</h2>
-                                </div>
-
-                                <div class="content fs--12">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industtry's statndard dummy specimen book. Lorem Ipsum which looks reasonable. The generated Lorem Ipsum words etc.</p>
-                                </div>
-
-                                <div class="action text-uppercase">
-                                    <a href="#" class="btn btn-sm btn-google"><i class="fa mr--8 fa-play"></i>Play Store</a>
-                                    <a href="#" class="btn btn-sm btn-apple"><i class="fa mr--8 fa-apple"></i>App Store</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Download Block End -->
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- FAQ and Download Section End -->
+        {% include 'footer.html' %}
 
     </div>
     <!-- Wrapper End -->

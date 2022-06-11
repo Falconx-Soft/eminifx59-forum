@@ -50,10 +50,50 @@
                             <!-- Filter Nav Start -->
                             <div class="filter--nav pb--30 clearfix">
                                 <div class="filter--link float--left">
-                                    <h2 class="h4">All Groups : 25</h2>
+                                    <h2 class="h4">All Groups : {{count}}</h2>
+                                </div>
+                                <div class="filter--options float--right">
+                                    <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#exampleModal"><i class="mr--10 fa fa-cloud-upload"></i>Add Group</a>
                                 </div>
                             </div>
                             <!-- Filter Nav End -->
+
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Create Your Post</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    
+                                    <form class="form" method="POST" action="{% url 'create_group' %}">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="form-holder login-form active" data-step="1">
+
+                                                <div class="form">
+                                                <div>
+                                                    <input placeholder="Title" class="form-control" type="text" name="title" required>
+                                                    <br>
+                                                    <div class="signup_input"> 
+                                                        <textarea class="form-control" name="description" rows="10" placeholder="Description..." required></textarea>
+                                                    </div>
+                                                </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+
+                                        <button type="submit" class="btn btn-primary">Create</button>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
                             
                             <!-- Box Items Start -->
                             <div class="box--items">
@@ -66,7 +106,7 @@
                                                 <div class="img" data-overlay="0.1">
                                                     <img src="{% static 'img/group-img/01.jpg.url' %}" alt="">
                                                 </div>
-                                                <div class="info">
+                                                <div class="info" style="min-height: 190px;">
                                                     <div class="icon fs--18 text-lightest bg-primary">
                                                         <h3 class="group-logo">G</h3>
                                                     </div>

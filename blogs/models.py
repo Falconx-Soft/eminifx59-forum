@@ -14,9 +14,8 @@ from ckeditor.fields import RichTextField
 
 class Group(models.Model):
     author      =       models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    title       =       models.CharField(max_length=1000)
+    title       =       models.CharField(max_length=1000, unique=True)
     slug        =       models.CharField(max_length=1000)
-    image       =       models.ImageField(blank=True)
     description =       RichTextUploadingField()
     created_at  =       models.DateTimeField(auto_now_add=True)
     updated     =       models.DateTimeField(auto_now=True)

@@ -35,21 +35,18 @@ def register(request):
         user = authenticate(username=username, password=password)
         login(request, user)
         
-        return redirect('/list')
+        return redirect('list')	
     return render(request, 'home.html')
 
 def create_group(request):
-    username= request.user.username
-    user_obj= User.objects.filter(username= username)
     if request.method== 'POST':
-        title= request.POST.get('title')
-        slug= title.replace(" ","-")
-        print(slug)
+        title = request.POST.get('title')
+        slug = title.replace(" ","-")
         description= request.POST.get('description')
-        gropu_obj= Group.objects.create(author=user_obj[0],slug= slug, title= title , description= description)
-
-        return redirect('/bloglist')
-    return render(request, 'create_group.html')
+        gropu_obj= Group.objects.create(author=request.user,slug=slug, title= title , description= description)
+        gropu_obj.save()
+        return redirect('list')	
+    return render(request, 'home.html')
 
 
 def loginUser(request):
@@ -74,21 +71,16 @@ def logoutUser(request):
         return redirect('/')
 
 def create_post(request):
-    print('___________________________')
-    username= request.user.username
-    user_obj= User.objects.filter(username= username)
-   
     if request.method== 'POST':
         post_text= request.POST.get('post_text')
         slug= request.POST.get('slug')
         group_obj = Group.objects.get(slug=slug)
-        print('___________________________')
-        print('post_text', post_text)
-        post_obj= Post.objects.create(group = group_obj, post_by=user_obj[0], post_text= post_text )
+        title = request.POST.get('title')
+        post_obj= Post.objects.create(group = group_obj, post_by=request.user, title=title, post_text= post_text )
         post_obj.save()
 
         return redirect(reverse('detail', args = [slug]))
-    return render(request,'blogdetail.html')
+    return render(request,'home.html')
 
 def create_comment(request):
    
@@ -127,6 +119,8 @@ def join_group(request,id):
 
 def GroupList(request):
     groups = Group.objects.all()
+    resent_groups = Group.objects.all()[:4]
+    count = groups.count()
 
     paginator = Paginator(groups ,10) # Shows only 10 records per page
 
@@ -144,11 +138,14 @@ def GroupList(request):
         i.description=i.description[:500]
     context = {
         'groups':groups,
-        'group':group
+        'group':group,
+        'count':count,
+        'resent_groups':resent_groups
     }
     return render(request,'grouplist.html',context)
 
 def GroupDetail(request,slug):
+    resent_groups = Group.objects.all()[:4]
     group = Group.objects.get(slug=slug)
     posts= Post.objects.filter(group=group)
     temp = False
@@ -159,16 +156,19 @@ def GroupDetail(request,slug):
     context = {
         'group':group,
         'posts':posts,
-        'is_member':temp
+        'is_member':temp,
+        'resent_groups':resent_groups
     }
     return render(request,'groupdetail.html',context)
 
 def GroupMembers(request, slug):
     group = Group.objects.get(slug=slug)
+    resent_groups = Group.objects.all()[:4]
     members = GroupJoined.objects.filter(joined_group=group)
     context = {
         'group':group,
-        'members':members
+        'members':members,
+        'resent_groups':resent_groups
     }
     return render(request,'groupmembers.html',context)
 
@@ -177,30 +177,40 @@ def ViewPost(request,id):
     post_obj = Post.objects.get(id=id)
     post_comment = PostComment.objects.filter(post=post_obj)
 
+    resent_groups = Group.objects.all()[:4]
+
     context = {
         'post':post_obj,
         'comments':post_comment,
+        'resent_groups':resent_groups
     }
     return render(request,'post.html',context)
 
 def view_profile(request,id):
     user_obj = User.objects.get(id=id)
+
+    resent_groups = Group.objects.all()[:4]
     context = {
-        'user_obj':user_obj
+        'user_obj':user_obj,
+        'resent_groups':resent_groups
     }
     return render(request, 'profile.html',context)
 
 def user_post(request,id):
     user_obj = User.objects.get(id=id)
     posts = Post.objects.filter(post_by=user_obj)
+    resent_groups = Group.objects.all()[:4]
 
     context = {
         'user_obj':user_obj,
         'posts':posts,
+        'resent_groups':resent_groups
     }
     return render(request, 'user_post.html',context)
 
 def home(request):
-    if request.user.is_authenticated:
-            return redirect('list')
-    return render(request,'home.html')
+    resent_groups = Group.objects.all()[:4]
+    context = {
+        'resent_groups':resent_groups
+    }
+    return render(request,'home.html',context)

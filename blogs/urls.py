@@ -26,6 +26,7 @@ urlpatterns = [
     
     url('creategroup',views.create_group,name="create_group"),
     url('postcreate', views.create_post, name="postcreate"),
+    
     url('login/', views.loginUser, name="login"),
     
     

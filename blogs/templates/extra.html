@@ -1,0 +1,32 @@
+<!-- Main Sidebar Start -->
+<div class="main--sidebar col-md-4 pb--60" data-trigger="stickyScroll">
+
+    <!-- Widget Start -->
+    <div class="widget">
+        <h2 class="h4 fw--700 widget--title">Notice</h2>
+
+        <!-- Text Widget Start -->
+        <div class="text--widget">
+            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some  look even slightly believable.</p>
+        </div>
+        <!-- Text Widget End -->
+    </div>
+    <!-- Widget End -->
+
+    <!-- Widget Start -->
+    <div class="widget">
+        <h2 class="h4 fw--700 widget--title">Groups</h2>
+
+        <!-- Links Widget Start -->
+        <div class="links--widget">
+            <ul class="nav">
+                {% for rg in resent_groups %}
+                <li><a href="{% url 'detail' rg.slug %}">{{rg.title}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- Links Widget End -->
+    </div>
+    <!-- Widget End -->
+</div>
+<!-- Main Sidebar End -->
