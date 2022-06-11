@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.conf.urls import url
 from . import views
 from django.urls import path,include
@@ -28,6 +29,8 @@ urlpatterns = [
     url('postcreate', views.create_post, name="postcreate"),
     
     url('login/', views.loginUser, name="login"),
+
+    path('email/', views.store_email, name="email"),
     
     
     

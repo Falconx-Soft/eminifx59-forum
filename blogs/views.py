@@ -223,3 +223,10 @@ def home(request):
         'resent_groups':resent_groups
     }
     return render(request,'home.html',context)
+
+def store_email(request):
+    if request.method== 'POST':
+        e = request.POST.get('email')
+        email_obj = email.objects.create(email=e)
+        email_obj.save()
+        return redirect('home')

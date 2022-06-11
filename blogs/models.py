@@ -75,3 +75,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return str(self.user.username)
+
+class email(models.Model):
+    email = models.EmailField()
+
+    def __str__(self):
+        return str(self.email)

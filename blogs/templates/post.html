@@ -38,125 +38,123 @@
                                 <!-- Post Image Start -->
                                 
                                     <div class="post--content text-darker mt--10">
-                                        {{post.post_text}}
+                                        {{post.post_text|safe}}
                                     </div>
                             </div>
                                 <!-- Post Info End -->
                             
                             <!-- Post Item End -->
+                    <!-- Main Content End -->
+                        </div>
+                        <!-- Comment List Start -->
+                        <div class="comment--list pt--40">
+                            <h4 class="h4 pb--20">Comments</h4>
 
-                            <!-- Comment List Start -->
-                            <div class="comment--list pt--40">
-                                <h4 class="h4 pb--20">Comments</h4>
-
-                                <ul class="comment--items nav">
-                                    {% for c in comments %}
-                                    <li>
-                                        <!-- Comment Item Start -->
-                                        <div class="comment--item mr--15 clearfix">
-                                            <div class="img float--left" data-overlay="0.3" data-overlay-color="primary">
-                                                <img src="{% static 'img/default.png' %}" alt="">
-                                            </div>
-
-                                            <div class="info ov--h">
-                                                <div class="header clearfix">
-                                                    <div class="meta float--left">
-                                                        <p class="fs--14 fw--700 text-darkest">
-                                                            <a href="#">{{c.name}}</a>
-                                                        </p>
-
-                                                        <p>
-                                                            <i class="mr--10 fa fa-clock-o"></i>
-                                                            <span>{{c.post_date}}</span>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="reply text-darker float--right">
-                                                        <a href="#" class="btn btn-default">Reply</a>
-                                                    </div>
-                                                </div>
-
-                                                <div class="content pt--8 fs--14">
-                                                    <p>{{c.description}}</p>
-                                                </div>
-                                                <br>
-                                                <form method="POST" action="{% url 'reply' %}">
-                                                    {% csrf_token %} 
-                                                    <input class="form-control" type="text" name="comment" placeholder="Add reply" >
-                                                    <input type="hidden" value="{{c.id}}" name="id">
-                                                    <input type="hidden" value="{{post.id}}" name="post_id">
-                                                    <div class="col-sm-12 pt--10">
-                                                        <button type="submit" class="btn btn-sm btn-primary fs--14">Add reply</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            
+                            <ul class="comment--items nav">
+                                {% for c in comments %}
+                                <li>
+                                    <!-- Comment Item Start -->
+                                    <div class="comment--item mr--15 clearfix">
+                                        <div class="img float--left" data-overlay="0.3" data-overlay-color="primary">
+                                            <img src="{% static 'img/default.png' %}" alt="">
                                         </div>
-                                        <!-- Comment Item End -->
 
-                                        {% for r in c.id|replies %}
-                                        <ul class="comment--items nav">
-                                            <li>
-                                                <!-- Comment Item Start -->
-                                                <div class="comment--item mr--15 clearfix">
-                                                    <div class="img float--left" data-overlay="0.3" data-overlay-color="primary">
-                                                        <img src="{% static 'img/default.png' %}" alt="">
-                                                    </div>
+                                        <div class="info ov--h">
+                                            <div class="header clearfix">
+                                                <div class="meta float--left">
+                                                    <p class="fs--14 fw--700 text-darkest">
+                                                        <a href="#">{{c.name}}</a>
+                                                    </p>
 
-                                                    <div class="info ov--h">
-                                                        <div class="header clearfix">
-                                                            <div class="meta float--left">
-                                                                <p class="fs--14 fw--700 text-darkest">
-                                                                    <a href="#">{{r.name}}</a>
-                                                                </p>
-
-                                                                <p>
-                                                                    <i class="mr--10 fa fa-clock-o"></i>
-                                                                    <span>{{r.post_date}}</span>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="content pt--8 fs--14">
-                                                            <p>{{r.description}}</p>
-                                                        </div>
-                                                    </div>
+                                                    <p>
+                                                        <i class="mr--10 fa fa-clock-o"></i>
+                                                        <span>{{c.post_date}}</span>
+                                                    </p>
                                                 </div>
-                                                <!-- Comment Item End -->
-                                            </li>
-                                        </ul>
-                                        {% endfor %}
+
+                                                <div class="reply text-darker float--right">
+                                                    <a href="#" class="btn btn-default">Reply</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="content pt--8 fs--14">
+                                                <p>{{c.description}}</p>
+                                            </div>
+                                            <br>
+                                            <form method="POST" action="{% url 'reply' %}">
+                                                {% csrf_token %} 
+                                                <input class="form-control" type="text" name="comment" placeholder="Add reply" >
+                                                <input type="hidden" value="{{c.id}}" name="id">
+                                                <input type="hidden" value="{{post.id}}" name="post_id">
+                                                <div class="col-sm-12 pt--10">
+                                                    <button type="submit" class="btn btn-sm btn-primary fs--14">Add reply</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                         
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            <!-- Comment List End -->
+                                    </div>
+                                    <!-- Comment Item End -->
 
-                            <!-- Comment Form Start -->
-                            <div class="comment--form pb--30" data-form="validate">
-                                <h4 class="h4 pb--15">Leave A Comment</h4>
+                                    {% for r in c.id|replies %}
+                                    <ul class="comment--items nav">
+                                        <li>
+                                            <!-- Comment Item Start -->
+                                            <div class="comment--item mr--15 clearfix">
+                                                <div class="img float--left" data-overlay="0.3" data-overlay-color="primary">
+                                                    <img src="{% static 'img/default.png' %}" alt="">
+                                                </div>
 
-                                <form method="POST" action="{% url 'comment' %}">
-                                    {% csrf_token %} 
-                                    <div class="row gutter--15">
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <textarea name="comment" placeholder="Comment *" name="comment" class="form-control" required></textarea>
-                                                <input type="hidden" name ="id" value="{{post.id}}">
+                                                <div class="info ov--h">
+                                                    <div class="header clearfix">
+                                                        <div class="meta float--left">
+                                                            <p class="fs--14 fw--700 text-darkest">
+                                                                <a href="#">{{r.name}}</a>
+                                                            </p>
+
+                                                            <p>
+                                                                <i class="mr--10 fa fa-clock-o"></i>
+                                                                <span>{{r.post_date}}</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="content pt--8 fs--14">
+                                                        <p>{{r.description}}</p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <!-- Comment Item End -->
+                                        </li>
+                                    </ul>
+                                    {% endfor %}
+                                    
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- Comment List End -->
 
-                                        <div class="col-sm-12 pt--10">
-                                            <button type="submit" class="btn btn-sm btn-primary fs--14">Post Comment</button>
+                        <!-- Comment Form Start -->
+                        <div class="comment--form pb--30" data-form="validate">
+                            <h4 class="h4 pb--15">Leave A Comment</h4>
+
+                            <form method="POST" action="{% url 'comment' %}">
+                                {% csrf_token %} 
+                                <div class="row gutter--15">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <textarea name="comment" placeholder="Comment *" name="comment" class="form-control" required></textarea>
+                                            <input type="hidden" name ="id" value="{{post.id}}">
                                         </div>
                                     </div>
-                                </form>
-                            </div>
-                            <!-- Comment Form End -->
-                    <!-- Main Content End -->
 
+                                    <div class="col-sm-12 pt--10">
+                                        <button type="submit" class="btn btn-sm btn-primary fs--14">Post Comment</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
+                        <!-- Comment Form End -->
                     </div>
                     <!-- Main Content End -->
 
